@@ -1,5 +1,5 @@
 # YaTTS
-[![Build Status](https://github.com/lEx0/yatts/actions/workflows/go.yml/badge.svg)
+[![Build Status](https://github.com/lEx0/yatts/actions/workflows/go.yml/badge.svg)]
 [![GoDoc](https://godoc.org/github.com/lEx0/yatts?status.svg)](https://godoc.org/github.com/lEx0/yatts)
 [![Go Report](https://goreportcard.com/badge/github.com/lEx0/yatts)](https://goreportcard.com/report/github.com/lEx0/yatts)
 [![codecov](https://codecov.io/gh/lEx0/yatts/branch/master/graph/badge.svg)](https://codecov.io/gh/lEx0/yatts)
