@@ -38,9 +38,10 @@ type (
 
 	// YaTTS is implementation of TTS based on Yandex TTS
 	YaTTS struct {
-		auth   auth.Authable
-		client *http.Client
-		url    string
+		auth    auth.Authable
+		client  *http.Client
+		url     string
+		options []request.Option
 	}
 )
 
@@ -48,15 +49,20 @@ type (
 const DefaultYandexTTSEndpointURL = "https://tts.api.cloud.yandex.net/speech/v1/tts:synthesize"
 
 // NewYaTTS creates a new YaTTS instance
-func NewYaTTS(authenticator auth.Authable, client *http.Client) *YaTTS {
+func NewYaTTS(
+	authenticator auth.Authable,
+	client *http.Client,
+	options ...request.Option,
+) *YaTTS {
 	if client == nil {
 		client = http.DefaultClient
 	}
 
 	return &YaTTS{
-		auth:   authenticator,
-		client: client,
-		url:    DefaultYandexTTSEndpointURL,
+		auth:    authenticator,
+		client:  client,
+		url:     DefaultYandexTTSEndpointURL,
+		options: options,
 	}
 }
 
@@ -82,7 +88,7 @@ func (y *YaTTS) Speak(ctx context.Context, entity request.TextEntity, options ..
 func (y *YaTTS) buildRequest(ctx context.Context, entity request.TextEntity, options ...request.Option) (*http.Request, error) {
 	r := request.NewRequest()
 
-	for _, option := range options {
+	for _, option := range append(y.options, options...) {
 		if err := option(r); err != nil {
 			return nil, err
 		}
