@@ -17,7 +17,7 @@ jobs:
       - name: Get dependecies
         run: go get -v
       - name: Test
-        run: go test -race -coverprofile=coverage.txt -covermode=atomic ./...
+        run: go test `go list ./... | grep -v txt` -race -coverprofile=coverage.txt -covermode=atomic ./...
       - name: Codecov
         run: bash <(curl -s https://codecov.io/bash)
 
