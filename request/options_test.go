@@ -284,6 +284,40 @@ func TestVoice(t *testing.T) {
 	}
 }
 
+func TestEmotion(t *testing.T) {
+	type testCase struct {
+		name string
+		in   emotion
+		want string
+	}
+
+	tests := []testCase{
+		{
+			name: "check neutral emotion",
+			in:   EmotionNeutral,
+			want: "neutral",
+		},
+		{
+			name: "check good emotion",
+			in:   EmotionGood,
+			want: "good",
+		},
+		{
+			name: "check evil emotion",
+			in:   EmotionEvil,
+			want: "evil",
+		},
+	}
+
+	for _, emotion := range tests {
+		t.Run(emotion.name, func(t *testing.T) {
+			req := request{}
+			_ = Emotion(emotion.in)(&req)
+			assert.Equal(t, emotion.want, req.Emotion)
+		})
+	}
+}
+
 func TestSpeed(t *testing.T) {
 	type (
 		in struct {

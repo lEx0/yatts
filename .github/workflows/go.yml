@@ -14,8 +14,12 @@ jobs:
           go-version: ${{ matrix.go-version }}
       - name: Checkout code
         uses: actions/checkout@v2
+      - name: Get dependecies
+        run: go get -v
       - name: Test
-        run: go test ./...
+        run: go test `go list ./... | grep -v txt` -race -coverprofile=coverage.txt -covermode=atomic ./...
+      - name: Codecov
+        run: bash <(curl -s https://codecov.io/bash)
 
   test-cache:
     runs-on: ubuntu-latest

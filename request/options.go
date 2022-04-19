@@ -28,6 +28,7 @@ type (
 	voice            string
 	outputFormat     string
 	outputSampleRate int
+	emotion          string
 )
 
 func NewRequest() *request {
@@ -51,6 +52,10 @@ const (
 	VoiceOmazhRC  voice = "omazh:rc"
 	VoiceZaharRC  voice = "zahar:rc"
 	VoiceErmilRC  voice = "ermil:rc"
+
+	EmotionNeutral emotion = "neutral"
+	EmotionGood    emotion = "good"
+	EmotionEvil    emotion = "evil"
 
 	OutputFormatLPCM    outputFormat = "lpcm"
 	OutputFormatOggOpus outputFormat = "oggopus"
@@ -82,6 +87,13 @@ func Speed(speed float64) Option {
 
 		req.Speed = speed
 
+		return nil
+	}
+}
+
+func Emotion(name emotion) Option {
+	return func(req *request) error {
+		req.Emotion = string(name)
 		return nil
 	}
 }
