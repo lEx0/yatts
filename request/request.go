@@ -41,6 +41,7 @@ type request struct {
 	Language     string
 	Voice        string
 	Speed        float64
+	Emotion      string
 	SampleRate   int
 	OutputFormat string
 	FolderID     string
@@ -67,6 +68,10 @@ func (r request) Body() (io.Reader, error) {
 
 	if r.Speed != 0 {
 		v.Set("speed", fmt.Sprintf("%.1f", r.Speed))
+	}
+
+	if r.Emotion != "" {
+		v.Set("emotion", r.Emotion)
 	}
 
 	if r.SampleRate != 0 {
