@@ -70,9 +70,9 @@ func TestLanguage(t *testing.T) {
 			},
 		},
 		{
-			name: "set turkish language",
+			name: "set kazakh language",
 			in: in{
-				language: LangTr,
+				language: LangKK,
 				request: request{
 					SampleRate: 8000,
 				},
@@ -80,7 +80,35 @@ func TestLanguage(t *testing.T) {
 			want: nil,
 			result: request{
 				SampleRate: 8000,
-				Language:   "tr-TR",
+				Language:   "kk-KK",
+			},
+		},
+		{
+			name: "set deutsche language",
+			in: in{
+				language: LangDE,
+				request: request{
+					SampleRate: 8000,
+				},
+			},
+			want: nil,
+			result: request{
+				SampleRate: 8000,
+				Language:   "de-DE",
+			},
+		},
+		{
+			name: "set deutsche language",
+			in: in{
+				language: LangUZ,
+				request: request{
+					SampleRate: 8000,
+				},
+			},
+			want: nil,
+			result: request{
+				SampleRate: 8000,
+				Language:   "uz-UZ",
 			},
 		},
 	}
@@ -165,15 +193,6 @@ func TestVoice(t *testing.T) {
 
 	tests := []testCase{
 		{
-			name: "set oksana voice",
-			in: in{
-				voice:   VoiceOksana,
-				request: request{},
-			},
-			want:   nil,
-			result: request{Voice: "oksana"},
-		},
-		{
 			name: "set jana voice",
 			in: in{
 				voice:   VoiceJane,
@@ -228,49 +247,58 @@ func TestVoice(t *testing.T) {
 			result: request{Voice: "filipp"},
 		},
 		{
-			name: "set oksana:rc voice",
+			name: "set Amira voice",
 			in: in{
-				voice:   VoiceOksanaRC,
+				voice:   VoiceAmira,
 				request: request{},
 			},
 			want:   nil,
-			result: request{Voice: "oksana:rc"},
+			result: request{Voice: "amira"},
 		},
 		{
-			name: "set jane:rc voice",
+			name: "set Madi voice",
 			in: in{
-				voice:   VoiceJaneRC,
+				voice:   VoiceMadi,
 				request: request{},
 			},
 			want:   nil,
-			result: request{Voice: "jane:rc"},
+			result: request{Voice: "madi"},
 		},
 		{
-			name: "set omazh:rc voice",
+			name: "set MadiRus voice",
 			in: in{
-				voice:   VoiceOmazhRC,
+				voice:   VoiceMadiRus,
 				request: request{},
 			},
 			want:   nil,
-			result: request{Voice: "omazh:rc"},
+			result: request{Voice: "madirus"},
 		},
 		{
-			name: "set zahar:rc voice",
+			name: "set Nigora voice",
 			in: in{
-				voice:   VoiceZaharRC,
+				voice:   VoiceNigora,
 				request: request{},
 			},
 			want:   nil,
-			result: request{Voice: "zahar:rc"},
+			result: request{Voice: "nigora"},
 		},
 		{
-			name: "set ermil:rc voice",
+			name: "set Lea voice",
 			in: in{
-				voice:   VoiceErmilRC,
+				voice:   VoiceLea,
 				request: request{},
 			},
 			want:   nil,
-			result: request{Voice: "ermil:rc"},
+			result: request{Voice: "lea"},
+		},
+		{
+			name: "set John voice",
+			in: in{
+				voice:   VoiceJohn,
+				request: request{},
+			},
+			want:   nil,
+			result: request{Voice: "john"},
 		},
 	}
 

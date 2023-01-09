@@ -31,27 +31,32 @@ type (
 	emotion          string
 )
 
+//goland:noinspection GoExportedFuncWithUnexportedType
 func NewRequest() *request {
 	return &request{}
 }
 
+// voice details
+// https://cloud.yandex.ru/docs/speechkit/tts/voices
 const (
 	LangRu lang = "ru-RU"
 	LangEn lang = "en-US"
-	LangTr lang = "tr-TR"
+	LangKK lang = "kk-KK"
+	LangDE lang = "de-DE"
+	LangUZ lang = "uz-UZ"
 
-	VoiceOksana   voice = "oksana"
-	VoiceJane     voice = "jane"
-	VoiceOmazh    voice = "omazh"
-	VoiceZahar    voice = "zahar"
-	VoiceErmil    voice = "ermil"
-	VoiceAlena    voice = "alena"
-	VoiceFilipp   voice = "filipp"
-	VoiceOksanaRC voice = "oksana:rc"
-	VoiceJaneRC   voice = "jane:rc"
-	VoiceOmazhRC  voice = "omazh:rc"
-	VoiceZaharRC  voice = "zahar:rc"
-	VoiceErmilRC  voice = "ermil:rc"
+	VoiceJane    voice = "jane"
+	VoiceOmazh   voice = "omazh"
+	VoiceZahar   voice = "zahar"
+	VoiceErmil   voice = "ermil"
+	VoiceAlena   voice = "alena"
+	VoiceFilipp  voice = "filipp"
+	VoiceAmira   voice = "amira"
+	VoiceMadi    voice = "madi"
+	VoiceMadiRus voice = "madirus"
+	VoiceNigora  voice = "nigora"
+	VoiceLea     voice = "lea"
+	VoiceJohn    voice = "john"
 
 	EmotionNeutral emotion = "neutral"
 	EmotionGood    emotion = "good"
