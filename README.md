@@ -1,5 +1,5 @@
 # YaTTS
-![Build Status](https://github.com/lEx0/yatts/actions/workflows/go.yml/badge.svg)
+[![Test](https://github.com/lEx0/yatts/actions/workflows/go.yml/badge.svg)](https://github.com/lEx0/yatts/actions/workflows/go.yml)
 [![GoDoc](https://godoc.org/github.com/lEx0/yatts?status.svg)](https://godoc.org/github.com/lEx0/yatts)
 [![Go Report](https://goreportcard.com/badge/github.com/lEx0/yatts)](https://goreportcard.com/report/github.com/lEx0/yatts)
 [![codecov](https://codecov.io/gh/lEx0/yatts/branch/master/graph/badge.svg)](https://codecov.io/gh/lEx0/yatts)
@@ -9,10 +9,11 @@ Golang's library for synthesizing speech from text using Yandex.Speech API V1
 ## Features
  - Multiple authantication methods (iam, api token)
  - Support SSML
- - Return lpcm or Ogg/Opus
+ - Return lpcm, Ogg/Opus, mp3 (v3)
 
 ## Install
-`go get -u github.com/lEx0/yatts`
+ - speechkit v1 (rest): `go get -u github.com/lEx0/yatts`
+ - speechkit v3 (grpc): `go get -u github.com/lEx0/yatts/v3`
 
 ## Example
 
