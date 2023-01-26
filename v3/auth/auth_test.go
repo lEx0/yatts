@@ -33,7 +33,7 @@ func TestNewAPITokenAuth(t *testing.T) {
 		}
 
 		if authValue[0] != "Api-Key token" {
-			t.Error("authorization value must be Bearer token")
+			t.Error("authorization value must be Api-Key token")
 			t.FailNow()
 		}
 
