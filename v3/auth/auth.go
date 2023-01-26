@@ -32,10 +32,10 @@ type (
 		Auth(ctx context.Context) (context.Context, error)
 	}
 
-	getIamTokenFunc func() (string, error)
+	GetIamTokenFunc func() (string, error)
 
 	IAMTokenAuth struct {
-		getIAMTokenFunc getIamTokenFunc
+		getIAMTokenFunc GetIamTokenFunc
 		xFolderID       string
 	}
 
@@ -45,7 +45,7 @@ type (
 	}
 )
 
-func NewIAMTokenAuth(getIAMTokenFunc getIamTokenFunc, xFolderID string) (*IAMTokenAuth, error) {
+func NewIAMTokenAuth(getIAMTokenFunc GetIamTokenFunc, xFolderID string) (*IAMTokenAuth, error) {
 	if getIAMTokenFunc == nil {
 		return nil, errors.New("invalid getIAMTokenFunc")
 	}
