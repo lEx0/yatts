@@ -58,6 +58,7 @@ const (
 	VoiceLea     voice = "lea"
 	VoiceJohn    voice = "john"
 
+	EmotionNone    emotion = ""
 	EmotionNeutral emotion = "neutral"
 	EmotionGood    emotion = "good"
 	EmotionEvil    emotion = "evil"
