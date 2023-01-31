@@ -79,11 +79,9 @@ func (r request) Build() (*tts.UtteranceSynthesisRequest, error) {
 		})
 	}
 
-	if r.Emotion != "" {
-		hints = append(hints, &tts.Hints{
-			Hint: &tts.Hints_Role{Role: r.Emotion},
-		})
-	}
+	hints = append(hints, &tts.Hints{
+		Hint: &tts.Hints_Role{Role: r.Emotion},
+	})
 
 	if len(hints) > 0 {
 		result.Hints = hints
