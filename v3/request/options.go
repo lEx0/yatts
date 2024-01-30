@@ -59,6 +59,7 @@ const (
 	OutputFormatLPCM    outputFormat = "lpcm"
 	OutputFormatOggOpus outputFormat = "oggopus"
 	OutputFormatMp3     outputFormat = "mp3"
+	OutputFormatWav     outputFormat = "wav"
 
 	OutputSampleRate8k  outputSampleRate = 8000
 	OutputSampleRate16k outputSampleRate = 16000
@@ -93,7 +94,7 @@ func Emotion(name emotion) Option {
 
 func OutputFormat(name outputFormat) Option {
 	return func(req *request) error {
-		req.OutputFormat = string(name)
+		req.OutputFormat = name
 		return nil
 	}
 }
