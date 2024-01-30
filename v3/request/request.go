@@ -35,91 +35,124 @@ var (
 )
 
 type request struct {
-	Text         string
-	Voice        string
-	Speed        float64
-	Emotion      string
-	SampleRate   int
-	OutputFormat string
+	AudioTemplate *audioTemplate
+	Text          string
+	Voice         string
+	Speed         float64
+	Emotion       string
+	SampleRate    int
+	OutputFormat  outputFormat
 }
 
 func (r request) Build() (*tts.UtteranceSynthesisRequest, error) {
-	result := tts.UtteranceSynthesisRequest{
-		Utterance:       nil,
-		Hints:           nil,
-		OutputAudioSpec: nil,
-		UnsafeMode:      false,
+	result, err := r.buildRequest()
+
+	if err != nil {
+		return nil, err
 	}
 
-	hints := make([]*tts.Hints, 0)
+	result.OutputAudioSpec, err = buildAudioFormat(r.OutputFormat, r.SampleRate)
+
+	return result, err
+}
+
+func (r request) buildRequest() (*tts.UtteranceSynthesisRequest, error) {
+	var (
+		result = tts.UtteranceSynthesisRequest{
+			Utterance:       nil,
+			Hints:           nil,
+			OutputAudioSpec: nil,
+			UnsafeMode:      false,
+		}
+		hints = make([]*tts.Hints, 0)
+		err   error
+	)
 
 	if r.Text != "" {
 		result.Utterance = &tts.UtteranceSynthesisRequest_Text{
 			Text: r.Text,
 		}
+
+		if r.Voice == "" {
+			return nil, ErrVoiceNotSpecified
+		}
+
+		hints = append(
+			hints, &tts.Hints{
+				Hint: &tts.Hints_Voice{Voice: r.Voice},
+			},
+		)
+
+		if r.Speed != 0 {
+			if r.Speed < 0.1 || r.Speed > 3 {
+				return nil, ErrInvalidSpeakingSpeed
+			}
+
+			hints = append(
+				hints, &tts.Hints{
+					Hint: &tts.Hints_Speed{Speed: r.Speed},
+				},
+			)
+		}
+
+		hints = append(
+			hints, &tts.Hints{
+				Hint: &tts.Hints_Role{Role: r.Emotion},
+			},
+		)
+
+		if len(hints) > 0 {
+			result.Hints = hints
+		}
+	} else if r.AudioTemplate != nil {
+		result.Utterance = r.AudioTemplate.TextTemplate()
+		result.Model = "zsl"
+		result.Hints, err = r.AudioTemplate.Hints()
 	} else {
 		return nil, ErrNoSpeakEntity
 	}
 
-	if r.Voice == "" {
-		return nil, ErrVoiceNotSpecified
-	}
+	return &result, err
+}
 
-	hints = append(hints, &tts.Hints{
-		Hint: &tts.Hints_Voice{Voice: r.Voice},
-	})
-
-	if r.Speed != 0 {
-		if r.Speed < 0.1 || r.Speed > 3 {
-			return nil, ErrInvalidSpeakingSpeed
-		}
-
-		hints = append(hints, &tts.Hints{
-			Hint: &tts.Hints_Speed{Speed: r.Speed},
-		})
-	}
-
-	hints = append(hints, &tts.Hints{
-		Hint: &tts.Hints_Role{Role: r.Emotion},
-	})
-
-	if len(hints) > 0 {
-		result.Hints = hints
-	}
-
-	if r.OutputFormat == "" {
-		return nil, ErrOutputFormatNotSpecified
-	}
-
-	switch outputFormat(r.OutputFormat) {
+func buildAudioFormat(format outputFormat, sampleRate int) (*tts.AudioFormatOptions, error) {
+	switch format {
 	case OutputFormatLPCM:
-		result.OutputAudioSpec = &tts.AudioFormatOptions{
+		return &tts.AudioFormatOptions{
 			AudioFormat: &tts.AudioFormatOptions_RawAudio{
 				RawAudio: &tts.RawAudio{
 					AudioEncoding:   tts.RawAudio_LINEAR16_PCM,
-					SampleRateHertz: int64(r.SampleRate),
+					SampleRateHertz: int64(sampleRate),
 				},
 			},
-		}
+		}, nil
+	case OutputFormatWav:
+		return &tts.AudioFormatOptions{
+			AudioFormat: &tts.AudioFormatOptions_ContainerAudio{
+				ContainerAudio: &tts.ContainerAudio{
+					ContainerAudioType: tts.ContainerAudio_WAV,
+				},
+			},
+		}, nil
 	case OutputFormatOggOpus:
-		result.OutputAudioSpec = &tts.AudioFormatOptions{
+		return &tts.AudioFormatOptions{
 			AudioFormat: &tts.AudioFormatOptions_ContainerAudio{
 				ContainerAudio: &tts.ContainerAudio{
 					ContainerAudioType: tts.ContainerAudio_OGG_OPUS,
 				},
 			},
-		}
+		}, nil
 	case OutputFormatMp3:
-		result.OutputAudioSpec = &tts.AudioFormatOptions{
+		return &tts.AudioFormatOptions{
 			AudioFormat: &tts.AudioFormatOptions_ContainerAudio{
 				ContainerAudio: &tts.ContainerAudio{
 					ContainerAudioType: tts.ContainerAudio_MP3,
 				},
 			},
-		}
+		}, nil
+	case "":
+		return nil, ErrOutputFormatNotSpecified
 	default:
 		return nil, ErrInvalidOutputFormat
 	}
-
-	return &result, nil
 }

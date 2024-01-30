@@ -37,7 +37,41 @@ type (
 	SimpleTextEntity struct {
 		Text string
 	}
+
+	AudioTemplateEntity struct {
+		audioTemplate
+	}
 )
+
+func NewAudioTemplateEntity(
+	textTemplate string,
+	textVariables map[string]string,
+	defaultVariables map[string]AudioVariable,
+	audioSource []byte,
+	audioFormat outputFormat,
+	audioSampleRate int,
+) AudioTemplateEntity {
+	return AudioTemplateEntity{
+		audioTemplate: audioTemplate{
+			textTemplate:     textTemplate,
+			textVariables:    textVariables,
+			defaultVariables: defaultVariables,
+			audioSource:      audioSource,
+			audioFormat:      audioFormat,
+			audioSampleRate:  audioSampleRate,
+		},
+	}
+}
+
+func (e AudioTemplateEntity) Process(req *request) error {
+	if len(e.audioSource) == 0 {
+		return ErrNoSpeakEntity
+	}
+
+	req.AudioTemplate = &e.audioTemplate
+
+	return nil
+}
 
 func (e SimpleTextEntity) Process(req *request) error {
 	if e.Text == "" {
